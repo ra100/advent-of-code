@@ -5,6 +5,7 @@ edition = "2021"
 
 [dependencies]
 rayon = "1.5"
+regex = "1"
 
 [[bin]]
 name = "aoc11"
@@ -13,3 +14,63 @@ path = "src/11.rs"
 [[bin]]
 name = "aoc12"
 path = "src/12.rs"
+
+[[bin]]
+name = "aoc13"
+path = "src/13.rs"
+
+[[bin]]
+name = "aoc14"
+path = "src/14.rs"
+
+[[bin]]
+name = "aoc14a"
+path = "src/14a.rs"
+
+[[bin]]
+name = "aoc15"
+path = "src/15.rs"
+
+[[bin]]
+name = "aoc15a"
+path = "src/15a.rs"
+
+[[bin]]
+name = "aoc16"
+path = "src/16.rs"
+
+[[bin]]
+name = "aoc16a"
+path = "src/16a.rs"
+
+[[bin]]
+name = "aoc17"
+path = "src/17.rs"
+
+[[bin]]
+name = "aoc17a"
+path = "src/17a.rs"
+
+[[bin]]
+name = "aoc17b"
+path = "src/17b.rs"
+
+[[bin]]
+name = "aoc18"
+path = "src/18.rs"
+
+[[bin]]
+name = "aoc19"
+path = "src/19.rs"
+
+[[bin]]
+name = "aoc19a"
+path = "src/19a.rs"
+
+[[bin]]
+name = "aoc20"
+path = "src/20.rs"
+
+[[bin]]
+name = "aoc20a"
+path = "src/20a.rs"
