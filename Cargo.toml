@@ -74,3 +74,15 @@ path = "src/20.rs"
 [[bin]]
 name = "aoc20a"
 path = "src/20a.rs"
+
+[[bin]]
+name = "aoc21"
+path = "src/21.rs"
+
+[[bin]]
+name = "aoc21a"
+path = "src/21a.rs"
+
+[[bin]]
+name = "aoc22"
+path = "src/22.rs"

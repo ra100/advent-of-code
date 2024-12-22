@@ -1,0 +1,73 @@
++---+---+---+
+| 7 | 8 | 9 |
++---+---+---+
+| 4 | 5 | 6 |
++---+---+---+
+| 1 | 2 | 3 |
++---+---+---+
+    | 0 | A |
+    +---+---+
+
+    +---+---+
+    | ^ | A |
++---+---+---+
+| < | v | > |
++---+---+---+
+
+
+<vA<AA>>^AvAA<^A>A<v<A>>^AvA^A<vA>^A<v<A>^A>AAvA^A<v<A>A>^AAAvA<^A>A
+v<<A>>^A<A>AvA<^AA>A<vAAA>^A
+<A^A>^^AvvvA
+029A
+
+<A^A^^>AvvvA
+v<<A>>^A<A>A<AAv>A^Av<AAA>^A
+v<A<AA>>^AvAA<^A>Av<<A>>^AvA^Av<<A>>^AAv<A>A^A<A>Av<A<A>>^AAAvA<^A>A
+
+
+
+Row: 379
+v<<A >>^A vA ^A v<<A >>^A A v<A <A >>^A A vA A <^A >A v<A >^A A <A >A v<A <A >>^A A A vA <^A >A
+   <    A  >  A    <    A A   v  <    A A  > >   ^  A   v   A A  ^  A   v  <    A A A  >   ^  A
+        ^     A         ^ ^           < <           A       > >     A           v v v         A
+
+379A:
+<v<A >>^A vA ^A <vA <A A >>^A A vA <^A >A A vA ^A <vA >^A A <A >A <v<A >A >^A     A A vA <^A >A
+   <    A  >  A   v  < <    A A  >   ^  A A  >  A   v   A A  ^  A    <  v   A     A A   >  ^  A
+        ^     A             < <         ^ ^     A       > >     A           v     v v         A
+
+o: ^A<<^^A>>AvvvA
+   ^A<<^^A>>AvvvA
+   ^A<<^^A>>AvvvA
+j: <A>A<AAv<AA>>^AvAA^A<vAAA^>A
+   >Av<<AA>^AA>AvAA^A<vAAA>^A
+   >Av<<AA>^AA>AvAA^A<vAAA>^A
+j2:<Av<A>>^A<AAv<A>>^AvAA^A<vAAA>^A
+o: <A>Av<<AA>^AA>AvAA^A<vAAA>^A
+<v<A>>^AvA^A<vA<AA>>^AAvA<^A>AAvA^A<vA>^AA<A>A<v<A>A>^AAAvA<^A>A
+>>^A^A<vA<AA>>^AAvA<^A>AA^A>^AA>Av<<A>A>^AAAvA<^A>A
+v<<A>>^AvA^Av<<A>>^AA<vA<A>>^AAvAA<^A>A<vA>^AA<A>A<vA<A>>^AAA<A>vA^A
+
+^A<<^^A>>AvvvA
+^A<<^^A>>AvvvA
+^A<<^^A>>AvvvA
+
+
+
+^A<<^^A>>AvvvA
+^A^^<<A>>AvvvA
+
+^A<<^^A>>AvvvA
+
+<A>Av<<AA>^AA>AvAA^A<vAAA>^A
+<A>Av<<AA>^AA>AvAA^A<vAAA^>A
+<A>Av<<AA>^AA>AvAA^Av<AAA>^A
+<A>Av<<AA>^AA>AvAA^Av<AAA^>A
+<A>A<AAv<AA>>^AvAA^A<vAAA>^A
+<A>A<AAv<AA>>^AvAA^A<vAAA^>A
+<A>A<AAv<AA>>^AvAA^Av<AAA>^A
+<A>A<AAv<AA>>^AvAA^Av<AAA^>A
+
+>Av<<AA>^AA>AvAA^A<vAAA>^A
+<A>Av<<AA>^AA>AvAA^A<vAAA>^A
+
