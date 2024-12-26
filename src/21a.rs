@@ -1,21 +1,21 @@
-use std::{collections::HashMap, fs};
+use std::{collections::HashMap, fs, time::Instant};
 
 // 163872
 // 163872
 // 162740
 // 171156
 
-const DEFINED_LEVEL: i16 = i16::MAX;
+const DEFINED_LEVEL: i16 = 25; // 2 = 2 directional keypads
 
 fn main() {
     let content = fs::read_to_string("src/21.txt").expect("Failed to read file");
 
-    let input: Vec<(i32, Vec<char>)> = content
+    let input: Vec<(i64, Vec<char>)> = content
         .lines()
         .filter(|line| !line.is_empty())
         .map(|line| {
             let num = line.split("A").collect::<Vec<&str>>()[0];
-            let num = num.parse::<i32>().unwrap();
+            let num = num.parse::<i64>().unwrap();
             return (num, line.chars().collect());
         })
         .collect();
@@ -44,33 +44,36 @@ fn main() {
     let dead_number: (i8, i8) = (0, 3);
     let dead_arrow: (i8, i8) = (0, 0);
 
-    let mut key_map: HashMap<String, Vec<Vec<char>>> = HashMap::new();
-    let mut memo: HashMap<String, Vec<Vec<char>>> = HashMap::new();
+    let mut key_map: HashMap<(char, char), Vec<Vec<char>>> = HashMap::new();
+    let mut memo: HashMap<String, usize> = HashMap::new();
 
-    find_key_combination(&num_pad, &mut memo, dead_number);
-    find_key_combination(&arrow_pad, &mut memo, dead_arrow);
+    find_key_combination(&num_pad, &mut key_map, dead_number);
+    find_key_combination(&arrow_pad, &mut key_map, dead_arrow);
 
-    let mut short_sequences: Vec<(i32, i32)> = Vec::new();
+    // println!("Finding key combinations {:?}", key_map);
+
+    let mut short_sequences: Vec<(i64, i64)> = Vec::new();
+
+    let start = Instant::now();
 
     for row in &input {
-        // let initial_sequences = get_button_sequence(row.1.clone(), &memo, 'A');
-        let levels = 3; // Number of levels
+        let levels = DEFINED_LEVEL; // Number of levels
 
         let shortest_sequences =
-            find_shortest_sequence_length(row.1.clone(), levels, 'A', &mut memo);
-        // println!("Shortest sequences: {:?}", shortest_sequences[0]);
-        // print_array(&shortest_sequences[0]);
-        // let shortest = shortest_sequences[0].len() as i32;
+            find_shortest_sequence_length(row.1.clone(), levels, 'A', &mut memo, &key_map);
 
-        short_sequences.push((row.0, shortest_sequences as i32));
+        short_sequences.push((row.0, shortest_sequences as i64));
     }
+
+    let duration = start.elapsed();
+    println!("Time elapsed in expensive_function() is: {:?}", duration);
 
     // println!("memo: {:?}", memo);
 
     let mut complexity = 0;
     for (i, sequence) in short_sequences.iter().enumerate() {
-        complexity += sequence.1 as i32 * sequence.0;
-        println!("Sequence {}: {}", i + 1, sequence.1);
+        complexity += sequence.1 as i64 * sequence.0;
+        println!("Sequence {}: buttons {}", i + 1, sequence.1);
     }
 
     println!("Complexity: {}", complexity);
@@ -95,6 +98,7 @@ fn find_shortest_sequence_length(
     level: i16,
     start_key: char,
     memo: &mut HashMap<String, usize>,
+    key_map: &HashMap<(char, char), Vec<Vec<char>>>,
 ) -> usize {
     let key = get_memo_key(&input_sequence, level);
     if let Some(&value) = memo.get(&key) {
@@ -102,7 +106,7 @@ fn find_shortest_sequence_length(
     }
 
     if level == 0 {
-        let transformed_sequences = get_button_sequence(input_sequence.clone(), memo, start_key);
+        let transformed_sequences = get_button_sequence(input_sequence.clone(), key_map, start_key);
         let min_length = transformed_sequences
             .iter()
             .map(|seq| seq.len())
@@ -112,7 +116,8 @@ fn find_shortest_sequence_length(
         return min_length;
     }
 
-    let transformed_sequences = get_button_sequence(input_sequence.clone(), memo, start_key);
+    let transformed_sequences = get_button_sequence(input_sequence.clone(), key_map, start_key);
+    // println!("{:?}: {:?}", input_sequence, transformed_sequences);
     let mut min_length = usize::MAX;
 
     for transformed_sequence in &transformed_sequences {
@@ -127,13 +132,21 @@ fn find_shortest_sequence_length(
 
         let start_char_in_loop = 'A';
 
+        let mut subset_sequence_length = 0;
         for subset in &sequences {
-            let subset_length =
-                find_shortest_sequence_length(subset.clone(), level - 1, start_char_in_loop, memo);
+            let subset_length = find_shortest_sequence_length(
+                subset.clone(),
+                level - 1,
+                start_char_in_loop,
+                memo,
+                &key_map,
+            );
 
-            if subset_length < min_length {
-                min_length = subset_length;
-            }
+            subset_sequence_length += subset_length;
+        }
+
+        if min_length > subset_sequence_length {
+            min_length = subset_sequence_length;
         }
     }
 
@@ -143,15 +156,14 @@ fn find_shortest_sequence_length(
 
 fn get_button_sequence(
     input: Vec<char>,
-    key_map: &HashMap<String, Vec<Vec<char>>>,
+    key_map: &HashMap<(char, char), Vec<Vec<char>>>,
     start_key: char,
 ) -> Vec<Vec<char>> {
     let mut button_sequences: Vec<Vec<char>> = vec![vec![]];
     let mut current_key: char = start_key;
 
     for key in input {
-        let memo_key = get_memo_key(&vec![current_key, key], DEFINED_LEVEL);
-        if let Some(key_combinations) = key_map.get(&memo_key) {
+        if let Some(key_combinations) = key_map.get(&(current_key, key)) {
             let mut new_sequences: Vec<Vec<char>> = Vec::new();
             for sequence in button_sequences {
                 for combination in key_combinations {
@@ -170,15 +182,14 @@ fn get_button_sequence(
 
 fn find_key_combination(
     num_pad: &HashMap<char, (i8, i8)>,
-    key_map: &mut HashMap<String, Vec<Vec<char>>>,
+    key_map: &mut HashMap<(char, char), Vec<Vec<char>>>,
     dead_key: (i8, i8),
 ) {
     for first_key in num_pad.keys() {
         let (x1, y1) = num_pad.get(first_key).unwrap();
         for second_key in num_pad.keys() {
-            let memo_key = get_memo_key(&vec![*first_key, *second_key], DEFINED_LEVEL);
             if first_key == second_key {
-                key_map.insert(memo_key, vec![vec!['A']]);
+                key_map.insert((*first_key, *second_key), vec![vec!['A']]);
                 continue;
             }
             let (x2, y2) = num_pad.get(second_key).unwrap();
@@ -241,7 +252,7 @@ fn find_key_combination(
                 combinations.push(key_combination);
             }
 
-            key_map.insert(memo_key, combinations);
+            key_map.insert((*first_key, *second_key), combinations);
         }
     }
 }
