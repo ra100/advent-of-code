@@ -2,7 +2,7 @@ use std::collections::HashMap;
 use std::fs;
 use std::time::Instant;
 
-const ITERATIONS: u16 = 75;
+const ITERATIONS: u8 = 75;
 
 fn main() {
     let input: Vec<u64> = fs::read_to_string("src/11.txt")
@@ -49,20 +49,20 @@ fn get_value_by_rule(num: u64) -> Vec<u64> {
 
 fn apply_rules_recursive(
     input: Vec<u64>,
-    iteration: u16,
-    cache: &mut HashMap<(u64, u16), usize>,
+    iteration: u8,
+    cache: &mut HashMap<(u64, u8), usize>,
 ) -> Vec<usize> {
     if iteration == 0 {
-        return input.iter().map(|_| 1).collect();
+        return vec![1; input.len()];
     }
 
-    let mut next = Vec::new();
-    for &num in &input {
-        if let Some(&cached_count) = cache.get(&(num, iteration)) {
-            next.push(cached_count);
+    let mut next = Vec::with_capacity(input.len());
+    for num in input {
+        if let Some(cached_count) = cache.get(&(num, iteration)) {
+            next.push(*cached_count);
         } else {
             let next_sub_array = get_value_by_rule(num);
-            let result = apply_rules_recursive(next_sub_array.clone(), iteration - 1, cache);
+            let result = apply_rules_recursive(next_sub_array, iteration - 1, cache);
             let count: usize = result.iter().sum();
             cache.insert((num, iteration), count);
             next.push(count);
