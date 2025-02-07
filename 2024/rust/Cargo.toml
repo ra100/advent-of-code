@@ -8,6 +8,10 @@ rayon = "1.5"
 regex = "1"
 
 [[bin]]
+name = "aoc01"
+path = "src/01.rs"
+
+[[bin]]
 name = "aoc11"
 path = "src/11.rs"
 

@@ -1,13 +1,7 @@
 use std::fs;
 
-fn load_file(file_path: &str) -> Result<String, std::io::Error> {
-    return Ok(fs::read_to_string(file_path).expect("Something went wrong reading the file"));
-}
-
 fn main() {
-    let input_file = "src/01.txt";
-
-    let contents = load_file(input_file);
+    let contents = fs::read_to_string("src/01.txt").expect("Something went wrong reading the file");
 
     let (mut data1, mut data2): (Vec<i32>, Vec<i32>) = contents
         .lines()
