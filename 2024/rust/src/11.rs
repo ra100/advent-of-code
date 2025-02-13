@@ -22,9 +22,7 @@ fn main() {
     let res = apply_rules_recursive(input, ITERATIONS, &mut cache);
     let duration = start.elapsed();
 
-    let result: usize = res.iter().sum();
-
-    println!("{}", result);
+    println!("{}", res);
     println!("Time taken: {:?}", duration);
 }
 
@@ -51,23 +49,22 @@ fn apply_rules_recursive(
     input: Vec<u64>,
     iteration: u8,
     cache: &mut HashMap<(u64, u8), usize>,
-) -> Vec<usize> {
+) -> usize {
     if iteration == 0 {
-        return vec![1; input.len()];
+        return input.len();
     }
 
-    let mut next = Vec::with_capacity(input.len());
+    let mut result_count = 0;
     for num in input {
         if let Some(cached_count) = cache.get(&(num, iteration)) {
-            next.push(*cached_count);
+            result_count += *cached_count;
         } else {
             let next_sub_array = get_value_by_rule(num);
             let result = apply_rules_recursive(next_sub_array, iteration - 1, cache);
-            let count: usize = result.iter().sum();
-            cache.insert((num, iteration), count);
-            next.push(count);
+            cache.insert((num, iteration), result);
+            result_count += result;
         }
     }
 
-    next
+    return result_count;
 }
